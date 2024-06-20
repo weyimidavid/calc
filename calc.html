@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enhanced Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .calculator {
+            width: 250px;
+            margin: 100px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .display {
+            width: 100%;
+            height: 40px;
+            text-align: right;
+            margin-bottom: 10px;
+            padding: 5px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .button {
+            width: 100%;
+            height: 40px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" class="display" id="display" disabled>
+        <div class="buttons">
+            <button class="button" onclick="clearDisplay()">C</button>
+            <button class="button" onclick="appendOperator('(')">(</button>
+            <button class="button" onclick="appendOperator(')')">)</button>
+            <button class="button" onclick="appendOperator('/')">/</button>
+            <button class="button" onclick="appendNumber('7')">7</button>
+            <button class="button" onclick="appendNumber('8')">8</button>
+            <button class="button" onclick="appendNumber('9')">9</button>
+            <button class="button" onclick="appendOperator('*')">*</button>
+            <button class="button" onclick="appendNumber('4')">4</button>
+            <button class="button" onclick="appendNumber('5')">5</button>
+            <button class="button" onclick="appendNumber('6')">6</button>
+            <button class="button" onclick="appendOperator('-')">-</button>
+            <button class="button" onclick="appendNumber('1')">1</button>
+            <button class="button" onclick="appendNumber('2')">2</button>
+            <button class="button" onclick="appendNumber('3')">3</button>
+            <button class="button" onclick="appendOperator('+')">+</button>
+            <button class="button" onclick="appendNumber('0')">0</button>
+            <button class="button" onclick="appendOperator('.')">.</button>
+            <button class="button" onclick="calculateResult()">=</button>
+            <button class="button" onclick="appendOperator('^')">^</button>
+            <button class="button" onclick="appendFunction('sqrt')">√</button>
+            <button class="button" onclick="appendFunction('sin')">sin</button>
+            <button class="button" onclick="appendFunction('cos')">cos</button>
+            <button class="button" onclick="appendFunction('tan')">tan</button>
+        </div>
+    </div>
+
+    <script>
+        function appendNumber(number) {
+            document.getElementById('display').value += number;
+        }
+
+        function appendOperator(operator) {
+            document.getElementById('display').value += ' ' + operator + ' ';
+        }
+
+        function appendFunction(func) {
+            document.getElementById('display').value += func + '(';
+        }
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+        }
+
+        function calculateResult() {
+            const display = document.getElementById('display');
+            try {
+                display.value = eval(display.value.replace('^', '**').replace('sqrt', 'Math.sqrt').replace('sin', 'Math.sin').replace('cos', 'Math.cos').replace('tan', 'Math.tan'));
+            } catch (e) {
+                display.value = 'Error';
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            if (!isNaN(key)) {
+                appendNumber(key);
+            } else if (['+', '-', '*', '/', '(', ')', '.'].includes(key)) {
+                appendOperator(key);
+            } else if (key === 'Enter') {
+                calculateResult();
+            } else if (key === 'Backspace') {
+                clearDisplay();
+            }
+        });
+    </script>
+</body>
+</html>
